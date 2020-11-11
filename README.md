@@ -2,6 +2,14 @@
 
 An Ethereum Exchange for different ERC20 tokens.
 
+## Kovan Dev Token
+
+https://kovan.etherscan.io/address/0x68b04a6ce5083de24a6b6c9362dd38bd9f8a85ca
+
+## Kovan EthSwap Contract Creation
+
+https://kovan.etherscan.io/address/0x7b9237158d64009838f1789ca05ec2683d023d30
+
 ## Migrations
 
 ```
