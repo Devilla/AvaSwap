@@ -59,11 +59,21 @@ Summary
 
 ## Sell Tokens
 
-investor must approve the token before transaction :
+Investor must approve the token before transaction :
 
-```await devToken.approve(ethSwap.address, tokens('100'), { from: investor})```
+```result = await devToken.approve(ethSwap.address, tokens('100'), { from: investor})```
 
-investor sells tokens : 
+Investor sells tokens : 
 
-```result = await ethSwap.sellToken(tokens('100'), { from: investor })
+```result = await ethSwap.sellToken(tokens('100'), { from: investor })```
+
+Check Eth balance :
+
+```let EthBalance = await web3.eth.getBalance(ethSwap.address)```
+
+
+Check Token balance :
+
+```let TokenBalance = await Token.balanceOf(ethSwap.address)```
+
 
