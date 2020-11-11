@@ -1,9 +1,11 @@
 # EthSwap
+
 An Ethereum Exchange for different ERC20 tokens.
 
 ## Migrations
 
-```Migrations dry-run (simulation)
+```
+Migrations dry-run (simulation)
 ===============================
 > Network name:    'kovan-fork'
 > Network id:      42
