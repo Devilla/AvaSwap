@@ -67,6 +67,8 @@ Investor sells tokens :
 
 ```result = await ethSwap.sellToken(tokens('100'), { from: investor })```
 
+## Check Balance
+
 Check Eth balance :
 
 ```let EthBalance = await web3.eth.getBalance(ethSwap.address)```
