@@ -1,6 +1,6 @@
 # EthSwap
 
-An Ethereum Exchange for different ERC20 tokens.
+An Ethereum Exchange for ERC20 tokens.
 
 ## Kovan Dev Token
 
