@@ -1,5 +1,7 @@
 require('babel-register');
 require('babel-polyfill');
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const { infuraKey, mnemonic } = require('./.secret');
 
 module.exports = {
   networks: {
@@ -8,6 +10,12 @@ module.exports = {
       port: 9545,
       network_id: "*" // Match any network id
     },
+    kovan: {
+     provider: () => new HDWalletProvider(mnemonic, infuraKey),
+     gas: 5000000,
+     gasPrice: 25000000000,
+     network_id: 42
+   }
   },
   contracts_directory: './src/contracts/',
   contracts_build_directory: './src/abis/',

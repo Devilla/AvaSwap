@@ -1,0 +1,512 @@
+{
+  "contractName": "LibNote",
+  "abi": [
+    {
+      "anonymous": true,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "sig",
+          "type": "bytes4"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "usr",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "arg1",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "arg2",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "LogNote",
+      "type": "event"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":true,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes4\",\"name\":\"sig\",\"type\":\"bytes4\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"usr\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"arg1\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"arg2\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"LogNote\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/dev/Workspace/EthSwap/src/contracts/lib.sol\":\"LibNote\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/dev/Workspace/EthSwap/src/contracts/lib.sol\":{\"keccak256\":\"0x3e182f61495484f9f86de91ea23c4d337d747f6a0fa9cb62b56ad009b57cb399\",\"urls\":[\"bzz-raw://dac9c2d1f32f41b62d000ce04e780241bb424a6d630828afa1ef226a7ef63ac9\",\"dweb:/ipfs/QmeZ3RAR3YTj61dU7KpA8FWeJxaCykxBxfC5wU9oNyBuD2\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603e80601d6000396000f3fe6080604052600080fdfea265627a7a72315820caedb2100fc0002533997a4c53ee90f6305043884f3496534e7b6d50a979a7b564736f6c63430005100032",
+  "deployedBytecode": "0x6080604052600080fdfea265627a7a72315820caedb2100fc0002533997a4c53ee90f6305043884f3496534e7b6d50a979a7b564736f6c63430005100032",
+  "sourceMap": "717:1165:4:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;717:1165:4;;;;;;;",
+  "deployedSourceMap": "717:1165:4:-;;;;;",
+  "source": "// SPDX-License-Identifier: AGPL-3.0-or-later\n\n// This program is free software: you can redistribute it and/or modify\n// it under the terms of the GNU General Public License as published by\n// the Free Software Foundation, either version 3 of the License, or\n// (at your option) any later version.\n\n// This program is distributed in the hope that it will be useful,\n// but WITHOUT ANY WARRANTY; without even the implied warranty of\n// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n// GNU General Public License for more details.\n\n// You should have received a copy of the GNU General Public License\n// along with this program.  If not, see <http://www.gnu.org/licenses/>.\n\npragma solidity >=0.5.12;\n\ncontract LibNote {\n    event LogNote(\n        bytes4   indexed  sig,\n        address  indexed  usr,\n        bytes32  indexed  arg1,\n        bytes32  indexed  arg2,\n        bytes             data\n    ) anonymous;\n\n    modifier note {\n        _;\n        assembly {\n            // log an 'anonymous' event with a constant 6 words of calldata\n            // and four indexed topics: selector, caller, arg1 and arg2\n            let mark := msize()                       // end of memory ensures zero\n            mstore(0x40, add(mark, 288))              // update free memory pointer\n            mstore(mark, 0x20)                        // bytes type data offset\n            mstore(add(mark, 0x20), 224)              // bytes size (padded)\n            calldatacopy(add(mark, 0x40), 0, 224)     // bytes payload\n            log4(mark, 288,                           // calldata\n                 shl(224, shr(224, calldataload(0))), // msg.sig\n                 caller(),                            // msg.sender\n                 calldataload(4),                     // arg1\n                 calldataload(36)                     // arg2\n                )\n        }\n    }\n}\n",
+  "sourcePath": "/home/dev/Workspace/EthSwap/src/contracts/lib.sol",
+  "ast": {
+    "absolutePath": "/home/dev/Workspace/EthSwap/src/contracts/lib.sol",
+    "exportedSymbols": {
+      "LibNote": [
+        995
+      ]
+    },
+    "id": 996,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 977,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "690:25:4"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 995,
+        "linearizedBaseContracts": [
+          995
+        ],
+        "name": "LibNote",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": true,
+            "documentation": null,
+            "id": 989,
+            "name": "LogNote",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 988,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 979,
+                  "indexed": true,
+                  "name": "sig",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "763:21:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
+                  },
+                  "typeName": {
+                    "id": 978,
+                    "name": "bytes4",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "763:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 981,
+                  "indexed": true,
+                  "name": "usr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "794:21:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 980,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "794:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 983,
+                  "indexed": true,
+                  "name": "arg1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "825:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 982,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "825:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 985,
+                  "indexed": true,
+                  "name": "arg2",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "857:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 984,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "857:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 987,
+                  "indexed": false,
+                  "name": "data",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "889:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 986,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "889:5:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "753:164:4"
+            },
+            "src": "740:188:4"
+          },
+          {
+            "body": {
+              "id": 993,
+              "nodeType": "Block",
+              "src": "948:932:4",
+              "statements": [
+                {
+                  "id": 991,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "958:1:4"
+                },
+                {
+                  "externalReferences": [],
+                  "id": 992,
+                  "nodeType": "InlineAssembly",
+                  "operations": "{\n    let mark := msize()\n    mstore(0x40, add(mark, 288))\n    mstore(mark, 0x20)\n    mstore(add(mark, 0x20), 224)\n    calldatacopy(add(mark, 0x40), 0, 224)\n    log4(mark, 288, shl(224, shr(224, calldataload(0))), caller(), calldataload(4), calldataload(36))\n}",
+                  "src": "969:905:4"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 994,
+            "name": "note",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 990,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "948:0:4"
+            },
+            "src": "934:946:4",
+            "visibility": "internal"
+          }
+        ],
+        "scope": 996,
+        "src": "717:1165:4"
+      }
+    ],
+    "src": "690:1193:4"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/dev/Workspace/EthSwap/src/contracts/lib.sol",
+    "exportedSymbols": {
+      "LibNote": [
+        995
+      ]
+    },
+    "id": 996,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 977,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "690:25:4"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 995,
+        "linearizedBaseContracts": [
+          995
+        ],
+        "name": "LibNote",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": true,
+            "documentation": null,
+            "id": 989,
+            "name": "LogNote",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 988,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 979,
+                  "indexed": true,
+                  "name": "sig",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "763:21:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
+                  },
+                  "typeName": {
+                    "id": 978,
+                    "name": "bytes4",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "763:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 981,
+                  "indexed": true,
+                  "name": "usr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "794:21:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 980,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "794:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 983,
+                  "indexed": true,
+                  "name": "arg1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "825:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 982,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "825:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 985,
+                  "indexed": true,
+                  "name": "arg2",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "857:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 984,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "857:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 987,
+                  "indexed": false,
+                  "name": "data",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 989,
+                  "src": "889:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 986,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "889:5:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "753:164:4"
+            },
+            "src": "740:188:4"
+          },
+          {
+            "body": {
+              "id": 993,
+              "nodeType": "Block",
+              "src": "948:932:4",
+              "statements": [
+                {
+                  "id": 991,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "958:1:4"
+                },
+                {
+                  "externalReferences": [],
+                  "id": 992,
+                  "nodeType": "InlineAssembly",
+                  "operations": "{\n    let mark := msize()\n    mstore(0x40, add(mark, 288))\n    mstore(mark, 0x20)\n    mstore(add(mark, 0x20), 224)\n    calldatacopy(add(mark, 0x40), 0, 224)\n    log4(mark, 288, shl(224, shr(224, calldataload(0))), caller(), calldataload(4), calldataload(36))\n}",
+                  "src": "969:905:4"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 994,
+            "name": "note",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 990,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "948:0:4"
+            },
+            "src": "934:946:4",
+            "visibility": "internal"
+          }
+        ],
+        "scope": 996,
+        "src": "717:1165:4"
+      }
+    ],
+    "src": "690:1193:4"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.4",
+  "updatedAt": "2020-11-12T09:47:43.528Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

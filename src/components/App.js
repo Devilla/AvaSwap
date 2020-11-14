@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Web3 from "web3";
 import DevToken from "../abis/DevToken.json";
+import Dai from "../abis/Dai.json";
 import EthSwap from "../abis/EthSwap.json";
 import Navbar from "./Navbar";
 import Main from "./Main";
@@ -23,24 +24,23 @@ class App extends Component {
 		const ethBalance = await web3.eth.getBalance(this.state.account);
 		this.setState({ ethBalance });
 
-		// Load Network ID
-		const networkId = await web3.eth.net.getId();
-
 		// Load Token
-		const tokenData = DevToken.networks[networkId];
-		if (tokenData) {
-			const token = new web3.eth.Contract(DevToken.abi, tokenData.address);
+		// const tokenAddress = '0x68B04a6Ce5083DE24a6B6c9362DD38bd9F8A85cA'
+		const daiAddress = '0x43b23072b895a342e464C4116D4fb8d3aaF53c78'
+		if (daiAddress) {
+			const token = new web3.eth.Contract(Dai.abi, daiAddress);
 			this.setState({ token });
 			let tokenBalance = await token.methods.balanceOf(this.state.account).call();
+			console.log(this.state.tokenBalance);
 			this.setState({ tokenBalance: tokenBalance.toString() });
 		} else {
 			window.alert("Token Network not detected");
 		}
 
 		// Load EthSwap
-		const ethSwapData = EthSwap.networks[networkId];
-		if (ethSwapData) {
-			const ethSwap = new web3.eth.Contract(EthSwap.abi, ethSwapData.address);
+		const ethSwapAddress = '0x49228522fD247177D546f1A7cED535F2877914e4'
+		if (ethSwapAddress) {
+			const ethSwap = new web3.eth.Contract(EthSwap.abi, ethSwapAddress);
 			this.setState({ ethSwap });
 		} else {
 			window.alert("EthSwap Network not detected");
@@ -74,6 +74,8 @@ class App extends Component {
 			.send({ value: etherAmount, from: this.state.account })
 			.on("transactionHash", (hash) => {
 				this.setState({ loading: false });
+			}).then(()=>{
+				window.location.reload();
 			});
 	};
 
@@ -84,7 +86,7 @@ class App extends Component {
 			.send({ from: this.state.account})
 			.on("transactionHash", (hash) => {
 				this.state.ethSwap.methods
-					.sellTokens(tokenAmount)
+					.sellToken(tokenAmount)
 					.send({ from: this.state.account })
 					.on("transactionHash", (hash) => {
 						this.setState({ loading: false });
