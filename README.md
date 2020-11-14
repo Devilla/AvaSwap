@@ -2,6 +2,10 @@
 
 An Ethereum Exchange for ERC20 tokens.
 
+## Kovan Dai Stablecoin
+
+https://kovan.etherscan.io/address/0x43b23072b895a342e464c4116d4fb8d3aaf53c78
+
 ## Kovan Dev Token
 
 https://kovan.etherscan.io/address/0x68b04a6ce5083de24a6b6c9362dd38bd9f8a85ca
