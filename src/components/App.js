@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Web3 from "web3";
 import DevToken from "../abis/DevToken.json";
+import LinkToken from "../abis/LinkToken.json";
 import Dai from "../abis/Dai.json";
 import EthSwap from "../abis/EthSwap.json";
 import Navbar from "./Navbar";
@@ -25,10 +26,9 @@ class App extends Component {
 		this.setState({ ethBalance });
 
 		// Load Token
-		// const tokenAddress = '0x68B04a6Ce5083DE24a6B6c9362DD38bd9F8A85cA'
-		const daiAddress = '0x43b23072b895a342e464C4116D4fb8d3aaF53c78'
-		if (daiAddress) {
-			const token = new web3.eth.Contract(Dai.abi, daiAddress);
+		const linkAddress = '0x235426ce11a3E23EA30f77cf6Dcbc7Fcd31E5a60'
+		if (linkAddress) {
+			const token = new web3.eth.Contract(LinkToken.abi, linkAddress);
 			this.setState({ token });
 			let tokenBalance = await token.methods.balanceOf(this.state.account).call();
 			console.log(this.state.tokenBalance);
@@ -38,7 +38,7 @@ class App extends Component {
 		}
 
 		// Load EthSwap
-		const ethSwapAddress = '0x49228522fD247177D546f1A7cED535F2877914e4'
+		const ethSwapAddress = '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
 		if (ethSwapAddress) {
 			const ethSwap = new web3.eth.Contract(EthSwap.abi, ethSwapAddress);
 			this.setState({ ethSwap });

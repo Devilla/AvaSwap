@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ethLogo from "../eth-logo.png";
 import daiLogo from "../dai-logo.png";
+import chainLinkLogo from "../chainlink-link-logo.png";
 
 class SellForm extends Component {
 	constructor(props) {
@@ -48,8 +49,8 @@ class SellForm extends Component {
 					/>
 					<div className="input-group-append">
 						<div className="input-group-text">
-							<img src={daiLogo} height="32" alt="" />
-							&nbsp; DAI
+							<img src={chainLinkLogo} height="32" alt="" />
+							&nbsp; LINK
 						</div>
 					</div>
 				</div>
@@ -80,7 +81,7 @@ class SellForm extends Component {
 					<span className="float-left text-muted">
 						<b>Exchange Rate</b>
 					</span>
-					<span className="float-right text-muted">100 DAI = 1 ETH</span>
+					<span className="float-right text-muted">100 LINK = 1 ETH</span>
 				</div>
 				<button type="submit" className="btn btn-primary btn-block btn-lg">
 					SWAP!
