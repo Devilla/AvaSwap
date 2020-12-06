@@ -19,7 +19,7 @@ class App extends Component {
 
 		// Load Network ID
 		const networkId = await web3.eth.net.getId();
-
+		console.log(networkId);
 		// get account
 		const accounts = await web3.eth.getAccounts();
 		this.setState({ account: accounts[0] });
@@ -29,7 +29,7 @@ class App extends Component {
 		this.setState({ ethBalance });
 
 		// Load Token
-		if (selectedToken.address && networkId==='42') {
+		if (selectedToken.address && networkId === 42) {
 			const token = new web3.eth.Contract(selectedToken.name==='LINK'? LinkToken.abi
 			:selectedToken.name==='DAI'? Dai.abi
 			:DevToken.abi, selectedToken.address);
