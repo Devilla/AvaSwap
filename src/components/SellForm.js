@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ethLogo from "../eth-logo.png";
+import tokenLogo from "../token-logo.png";
 import daiLogo from "../dai-logo.png";
 import chainLinkLogo from "../chainlink-link-logo.png";
 
@@ -8,10 +9,17 @@ class SellForm extends Component {
 		super(props);
 		this.state = {
 			output: "0",
+			selected : props.selectedToken.name
 		};
 	}
 
+	handleChange = (event) => {
+		    this.setState({selected: event.target.value});
+				this.props.handleTokenChange(event.target.value);
+	}
+
 	render() {
+		let {selected} = this.state;
 		return (
 			<form
 				className="mb-5"
@@ -48,10 +56,17 @@ class SellForm extends Component {
 						required
 					/>
 					<div className="input-group-append">
-						<div className="input-group-text">
-							<img src={chainLinkLogo} height="32" alt="" />
-							&nbsp; LINK
-						</div>
+					<div className="input-group-text">
+						<img src={selected==='LINK'? chainLinkLogo
+						:selected==='DAI'? daiLogo
+						:tokenLogo} height="32" alt="" />
+						&nbsp;
+						<select onChange={this.handleChange}>
+						<option selected={selected==='LINK'} defaultValue="LINK">LINK</option>
+						<option selected={selected==='DEV'} defaultValue="DEV">DEV</option>
+						<option selected={selected==='DAI'} defaultValue="DAI">DAI</option>
+					</select>
+					</div>
 					</div>
 				</div>
 				<div>
@@ -72,8 +87,10 @@ class SellForm extends Component {
 					/>
 					<div className="input-group-append">
 						<div className="input-group-text">
+						&nbsp;&nbsp;&nbsp;
 							<img src={ethLogo} height="32" alt="" />
-							&nbsp; ETH
+							&nbsp;&nbsp;&nbsp; ETH
+							&nbsp;&nbsp;&nbsp;
 						</div>
 					</div>
 				</div>
@@ -81,7 +98,7 @@ class SellForm extends Component {
 					<span className="float-left text-muted">
 						<b>Exchange Rate</b>
 					</span>
-					<span className="float-right text-muted">100 LINK = 1 ETH</span>
+					<span className="float-right text-muted">100 {selected} = 1 ETH</span>
 				</div>
 				<button type="submit" className="btn btn-primary btn-block btn-lg">
 					SWAP!

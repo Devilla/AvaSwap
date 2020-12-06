@@ -14,7 +14,8 @@ module.exports = {
      provider: () => new HDWalletProvider(mnemonic, infuraKey),
      gas: 5000000,
      gasPrice: 25000000000,
-     network_id: 42
+     network_id: 42,
+     networkCheckTimeout: 600000000
    }
   },
   contracts_directory: './src/contracts/',
