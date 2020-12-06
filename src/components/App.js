@@ -17,6 +17,9 @@ class App extends Component {
 	async loadBlockchainData(selectedToken) {
 		const web3 = window.web3;
 
+		// Load Network ID
+		const networkId = await web3.eth.net.getId();
+
 		// get account
 		const accounts = await web3.eth.getAccounts();
 		this.setState({ account: accounts[0] });
@@ -26,22 +29,19 @@ class App extends Component {
 		this.setState({ ethBalance });
 
 		// Load Token
-		console.log(selectedToken.address);
-		if (selectedToken.address) {
+		if (selectedToken.address && networkId==='42') {
 			const token = new web3.eth.Contract(selectedToken.name==='LINK'? LinkToken.abi
 			:selectedToken.name==='DAI'? Dai.abi
 			:DevToken.abi, selectedToken.address);
 			this.setState({ token });
 			let tokenBalance = await token.methods.balanceOf(this.state.account).call();
-			console.log(this.state.tokenBalance);
 			this.setState({ tokenBalance: tokenBalance.toString() });
 		} else {
-			window.alert("Token Network not detected");
+			window.alert("Kovan Test Network not detected");
 		}
 
 		// Load EthSwap
 		if (selectedToken.ethSwapAddress) {
-			console.log('EthSwap address : ', selectedToken.ethSwapAddress);
 			const ethSwap = new web3.eth.Contract(EthSwap.abi, selectedToken.ethSwapAddress);
 			this.setState({ ethSwap });
 		} else {
