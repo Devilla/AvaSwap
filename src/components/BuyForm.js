@@ -9,10 +9,17 @@ class BuyForm extends Component {
 		super(props);
 		this.state = {
 			output: "0",
+			selected : props.selectedToken.name
 		};
 	}
 
+	handleChange = (event) => {
+		    this.setState({selected: event.target.value});
+				this.props.handleTokenChange(event.target.value);
+	}
+
 	render() {
+		let {selected} = this.state;
 		return (
 			<form
 				className="mb-5"
@@ -50,8 +57,10 @@ class BuyForm extends Component {
 					/>
 					<div className="input-group-append">
 						<div className="input-group-text">
+						&nbsp;&nbsp;&nbsp;
 							<img src={ethLogo} height="32" alt="" />
-							&nbsp; ETH
+							&nbsp;&nbsp;&nbsp; ETH
+							&nbsp;&nbsp;&nbsp;
 						</div>
 					</div>
 				</div>
@@ -73,8 +82,15 @@ class BuyForm extends Component {
 					/>
 					<div className="input-group-append">
 						<div className="input-group-text">
-							<img src={chainLinkLogo} height="32" alt="" />
-							&nbsp; LINK
+							<img src={selected==='LINK'? chainLinkLogo
+							:selected==='DAI'? daiLogo
+							:tokenLogo} height="32" alt="" />
+							&nbsp;
+							<select onChange={this.handleChange}>
+							<option selected={selected==='LINK'} defaultValue="LINK">LINK</option>
+							<option selected={selected==='DEV'} defaultValue="DEV">DEV</option>
+						  <option selected={selected==='DAI'} defaultValue="DAI">DAI</option>
+						</select>
 						</div>
 					</div>
 				</div>
@@ -82,7 +98,7 @@ class BuyForm extends Component {
 					<span className="float-left text-muted">
 						<b>Exchange Rate</b>
 					</span>
-					<span className="float-right text-muted">1 ETH = 100 LINK</span>
+					<span className="float-right text-muted">1 ETH = 100 {selected}</span>
 				</div>
 				<button type="submit" className="btn btn-primary btn-block btn-lg">
 					SWAP!

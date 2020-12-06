@@ -10,22 +10,30 @@ class Main extends Component {
 		};
 	}
 
+	handleTokenChange = (token) => {
+		this.props.handleTokenChange(token);
+	}
+
 	render() {
 		let content;
 		if (this.state.currentForm === "buy")
 			content = (
 				<BuyFrom
+					selectedToken = {this.props.selectedToken}
 					ethBalance={this.props.ethBalance}
 					tokenBalance={this.props.tokenBalance}
 					buyTokens={this.props.buyTokens}
+					handleTokenChange = {this.handleTokenChange}
 				/>
 			);
 		else
 			content = (
 				<SellForm
+					selectedToken = {this.props.selectedToken}
 					ethBalance={this.props.ethBalance}
 					tokenBalance={this.props.tokenBalance}
 					sellTokens={this.props.sellTokens}
+					handleTokenChange = {this.handleTokenChange}
 				/>
 			);
 		return (

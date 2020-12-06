@@ -34,7 +34,7 @@ contract Dai is LibNote {
     string  public constant symbol   = "DAI";
     string  public constant version  = "1";
     uint8   public constant decimals = 18;
-    uint256 public totalSupply;
+    uint256 public totalSupply = 1000000000000000000000000; // 1 million tokens
 
     mapping (address => uint)                      public balanceOf;
     mapping (address => mapping (address => uint)) public allowance;
@@ -58,6 +58,7 @@ contract Dai is LibNote {
 
     constructor(uint256 chainId_) public {
         wards[msg.sender] = 1;
+        balanceOf[msg.sender] = totalSupply;
         DOMAIN_SEPARATOR = keccak256(abi.encode(
             keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
             keccak256(bytes(name)),

@@ -9,14 +9,17 @@ import Main from "./Main";
 import "./App.css";
 
 class App extends Component {
-	async componentWillMount() {
+	async componentDidMount() {
 		await this.loadWeb3();
-		await this.loadBlockchainData();
+		await this.loadBlockchainData(this.state.tokens[0]);
 	}
 
-	async loadBlockchainData() {
+	async loadBlockchainData(selectedToken) {
 		const web3 = window.web3;
 
+		// Load Network ID
+		const networkId = await web3.eth.net.getId();
+		console.log(networkId);
 		// get account
 		const accounts = await web3.eth.getAccounts();
 		this.setState({ account: accounts[0] });
@@ -26,21 +29,20 @@ class App extends Component {
 		this.setState({ ethBalance });
 
 		// Load Token
-		const linkAddress = '0x235426ce11a3E23EA30f77cf6Dcbc7Fcd31E5a60'
-		if (linkAddress) {
-			const token = new web3.eth.Contract(LinkToken.abi, linkAddress);
+		if (selectedToken.address && networkId === 42) {
+			const token = new web3.eth.Contract(selectedToken.name==='LINK'? LinkToken.abi
+			:selectedToken.name==='DAI'? Dai.abi
+			:DevToken.abi, selectedToken.address);
 			this.setState({ token });
 			let tokenBalance = await token.methods.balanceOf(this.state.account).call();
-			console.log(this.state.tokenBalance);
 			this.setState({ tokenBalance: tokenBalance.toString() });
 		} else {
-			window.alert("Token Network not detected");
+			window.alert("Kovan Test Network not detected");
 		}
 
 		// Load EthSwap
-		const ethSwapAddress = '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
-		if (ethSwapAddress) {
-			const ethSwap = new web3.eth.Contract(EthSwap.abi, ethSwapAddress);
+		if (selectedToken.ethSwapAddress) {
+			const ethSwap = new web3.eth.Contract(EthSwap.abi, selectedToken.ethSwapAddress);
 			this.setState({ ethSwap });
 		} else {
 			window.alert("EthSwap Network not detected");
@@ -66,17 +68,37 @@ class App extends Component {
 		}
 	}
 
+	fetchMinedTransactionReceipt = (transactionHash) => {
+
+  return new Promise((resolve, reject) => {
+
+    const { web3 } = window;
+
+    var timer = setInterval(()=> {
+      web3.eth.getTransactionReceipt(transactionHash, (err, receipt)=> {
+        if(!err && receipt){
+          clearInterval(timer);
+          resolve(receipt);
+        }
+      });
+    }, 2000)
+
+  })
+}
+
 	// Buy tokens @desc take input some amount of wei
 	buyTokens = async (etherAmount) => {
 		this.setState({ loading: true });
 		this.state.ethSwap.methods
 			.buyTokens()
 			.send({ value: etherAmount, from: this.state.account })
-			.on("transactionHash", (hash) => {
-				this.setState({ loading: false });
-			}).then(()=>{
-				window.location.reload();
-			});
+			.on("transactionHash", async (transactionHash) => {
+					const receipt = await this.fetchMinedTransactionReceipt(transactionHash);
+					if(receipt){
+						this.setState({ loading: false });
+						this.loadBlockchainData(this.state.selectedToken)
+					}
+			})
 	};
 
 	sellTokens = async (tokenAmount) => {
@@ -84,15 +106,28 @@ class App extends Component {
 		this.state.token.methods
 			.approve(this.state.ethSwap.address, tokenAmount)
 			.send({ from: this.state.account})
-			.on("transactionHash", (hash) => {
-				this.state.ethSwap.methods
-					.sellToken(tokenAmount)
-					.send({ from: this.state.account })
-					.on("transactionHash", (hash) => {
-						this.setState({ loading: false });
-					});
+			.on("transactionHash", async (hash) => {
+				const approveReceipt = await this.fetchMinedTransactionReceipt(hash);
+				if(approveReceipt)
+					this.state.ethSwap.methods
+						.sellToken(tokenAmount)
+						.send({ from: this.state.account })
+						.on("transactionHash", async (transactionHash) => {
+							const receipt = await this.fetchMinedTransactionReceipt(transactionHash);
+							if(receipt){
+								this.setState({ loading: false });
+								this.loadBlockchainData(this.state.selectedToken)
+							}
+						});
 			});
 	};
+
+	handleTokenChange = async (token) => {
+		const { tokens } = this.state;
+		const selectedToken = token===tokens[0].name ? tokens[0]:token===tokens[1].name ? tokens[1]:tokens[2];
+		this.setState({ selectedToken : selectedToken });
+		this.loadBlockchainData(selectedToken);
+	}
 
 	// react state
 	constructor(props) {
@@ -101,9 +136,32 @@ class App extends Component {
 			account: "",
 			token: {},
 			ethSwap: {},
+			selectedToken:{
+				name : 'LINK',
+				address : '0x235426ce11a3E23EA30f77cf6Dcbc7Fcd31E5a60',
+				ethSwapAddress : '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
+			},
+			tokenAddress: '0x43b23072b895a342e464C4116D4fb8d3aaF53c78',
 			tokenBalance: "0",
 			ethBalance: "0",
 			loading: true,
+			tokens: [
+			{
+				name : 'LINK',
+				address : '0x235426ce11a3E23EA30f77cf6Dcbc7Fcd31E5a60',
+				ethSwapAddress : '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
+			},
+			{
+				name : 'DAI',
+				address : '0x7858355eBC5708ce10494875BC065bD32a88ac0d',
+				ethSwapAddress : '0x81977DdCc672a4795BD7Eea7B0bb03A4787e2372'
+			},
+			{
+				name : 'DEV',
+				address : '0x68B04a6Ce5083DE24a6B6c9362DD38bd9F8A85cA',
+				ethSwapAddress : '0x7B9237158d64009838f1789ca05EC2683D023d30'
+			},
+		]
 		};
 	}
 
@@ -118,10 +176,12 @@ class App extends Component {
 		else
 			content = (
 				<Main
+					selectedToken =  {this.state.selectedToken}
 					ethBalance={this.state.ethBalance}
 					tokenBalance={this.state.tokenBalance}
 					buyTokens={this.buyTokens}
 					sellTokens={this.sellTokens}
+					handleTokenChange = {this.handleTokenChange}
 				/>
 			);
 		return (
