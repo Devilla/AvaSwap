@@ -103,4 +103,4 @@ Check Token balance :
 
 1. https://github.com/makerdao/dss
 2. https://github.com/smartcontractkit/LinkToken
-3. https://github.com/OpenZeppelin/openzeppelin-contracts/blob/9b3710465583284b8c4c5d2245749246bb2e0094/contracts/token/ERC20/ERC20.sol
+3. https://github.com/OpenZeppelin/openzeppelin-contracts
