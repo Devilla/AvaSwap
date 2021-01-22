@@ -154,7 +154,7 @@ class App extends Component {
 			{
 				name : 'DAI',
 				address : '0x7858355eBC5708ce10494875BC065bD32a88ac0d',
-				ethSwapAddress : '0x81977DdCc672a4795BD7Eea7B0bb03A4787e2372'
+				ethSwapAddress : '0x2471B119C722a4b214F62a1945d2358462B72c2a'
 			},
 			{
 				name : 'DEV',
