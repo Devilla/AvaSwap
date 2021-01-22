@@ -4,7 +4,7 @@ An Ethereum Exchange for ERC20 tokens.
 
 ## Kovan EthSwap Contract Creation
 
-https://kovan.etherscan.io/address/0x81977DdCc672a4795BD7Eea7B0bb03A4787e2372
+https://kovan.etherscan.io/address/0x2471B119C722a4b214F62a1945d2358462B72c2a
 
 ## Kovan ChainLink Token
 
