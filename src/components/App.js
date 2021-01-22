@@ -12,6 +12,7 @@ class App extends Component {
 	async componentDidMount() {
 		await this.loadWeb3();
 		await this.loadBlockchainData(this.state.tokens[0]);
+		console.log(await this.getLatestPrice());
 	}
 
 	async loadBlockchainData(selectedToken) {
@@ -86,6 +87,21 @@ class App extends Component {
   })
 }
 
+	// Get latest price ETH/DAI
+	getLatestPrice = async () => {
+		this.setState({ loading: true });
+		this.state.ethSwap.methods
+			.getLatestPrice()
+			.send({from: this.state.account})
+			.on("transactionHash", async (transactionHash) => {
+					const receipt = await this.fetchMinedTransactionReceipt(transactionHash);
+					if(receipt){
+						this.setState({ loading: false });
+						this.loadBlockchainData(this.state.selectedToken)
+					}
+			})
+	};
+
 	// Buy tokens @desc take input some amount of wei
 	buyTokens = async (etherAmount) => {
 		this.setState({ loading: true });
@@ -154,7 +170,7 @@ class App extends Component {
 			{
 				name : 'DAI',
 				address : '0x7858355eBC5708ce10494875BC065bD32a88ac0d',
-				ethSwapAddress : '0x81977DdCc672a4795BD7Eea7B0bb03A4787e2372'
+				ethSwapAddress : '0x2471B119C722a4b214F62a1945d2358462B72c2a'
 			},
 			{
 				name : 'DEV',

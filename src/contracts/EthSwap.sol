@@ -1,6 +1,6 @@
 pragma solidity 0.6.7;
 
-import "https://github.com/smartcontractkit/chainlink/blob/master/evm-contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
 import './DevToken.sol';
 
 contract EthSwap {
@@ -41,7 +41,7 @@ contract EthSwap {
             uint80 answeredInRound
         ) = priceFeed.latestRoundData();
         // If the round is not complete yet, timestamp is 0
-        require(timeStamp > 0, "Round not complete");
+        // require(timeStamp > 0, "Round not complete");
         return 1e18/price;
     }
 
