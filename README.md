@@ -4,7 +4,7 @@ An Ethereum Exchange for ERC20 tokens.
 
 ## Kovan EthSwap Contract Creation
 
-https://kovan.etherscan.io/address/0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd
+https://kovan.etherscan.io/address/0x81977DdCc672a4795BD7Eea7B0bb03A4787e2372
 
 ## Kovan ChainLink Token
 
@@ -13,7 +13,7 @@ https://kovan.etherscan.io/address/0x235426ce11a3E23EA30f77cf6Dcbc7Fcd31E5a60
 
 ## Kovan Dai Stablecoin
 
-https://kovan.etherscan.io/address/0x43b23072b895a342e464c4116d4fb8d3aaf53c78
+https://kovan.etherscan.io/address/0x7858355eBC5708ce10494875BC065bD32a88ac0d
 
 ## Kovan Dev Token
 
@@ -98,3 +98,9 @@ Check Eth balance :
 Check Token balance :
 
 ```let TokenBalance = await Token.balanceOf(ethSwap.address)```
+
+## References 
+
+1. https://github.com/makerdao/dss
+2. https://github.com/smartcontractkit/LinkToken
+3. https://github.com/OpenZeppelin/openzeppelin-contracts
