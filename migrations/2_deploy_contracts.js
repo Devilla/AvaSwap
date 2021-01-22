@@ -2,6 +2,8 @@ const EthSwap = artifacts.require("EthSwap");
 const DevToken = artifacts.require("DevToken");
 const Dai = artifacts.require('Dai');
 const LinkToken = artifacts.require('LinkToken');
+const PriceConsumerV3 = artifacts.require('PriceConsumerV3');
+
 
 
 module.exports = async function(deployer) {
@@ -22,6 +24,12 @@ module.exports = async function(deployer) {
   ethSwap =  await EthSwap.deployed();
   // Mint 0.001 Dai to EthSwap
   await dai.transfer(ethSwap.address, '1000000000000000000000000');
+
+  // Deploy PriceConsumerV3 chainlink oracle
+  await deployer.deploy(PriceConsumerV3);
+  // const priceConsumerV3 = await PriceConsumerV3.deployed();
+  // console.log(await priceConsumerV3.getLatestPrice());
+
   //
   // // Deploy LINK
   // await deployer.deploy(LinkToken);
