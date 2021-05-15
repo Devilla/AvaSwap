@@ -1,21 +1,17 @@
-require('babel-register');
-require('babel-polyfill');
-const HDWalletProvider = require('truffle-hdwallet-provider');
-const { infuraKey, mnemonic } = require('./.secret');
-
+const Web3 = require('web3');
+const protocol = "http";
+const ip = "localhost";
+const port = 9650;
 module.exports = {
   networks: {
-    development: {
-      host: "127.0.0.1",
-      port: 8545,
-      network_id: "*" // Match any network id
-    },
-    kovan: {
-     provider: () => new HDWalletProvider(mnemonic, infuraKey),
-     gas: 5000000,
-     gasPrice: 25000000000,
-     network_id: 42,
-     networkCheckTimeout: 600000000
+   development: {
+     provider: function() {
+      return new Web3.providers.HttpProvider(`${protocol}://${ip}:${port}/ext/bc/C/rpc`)
+     },
+     network_id: "*",
+     gas: 3000000,
+     gasPrice: 470000000000,
+     timeoutBlocks: 60 // must be greater than Web3's default (50)
    }
   },
   contracts_directory: './src/contracts/',
@@ -29,4 +25,4 @@ module.exports = {
       }
     }
   }
-}
+};
