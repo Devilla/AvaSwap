@@ -1,19 +1,19 @@
 const Dai = artifacts.require('Dai')
-const EthSwap = artifacts.require('EthSwap')
+const AvaSwap = artifacts.require('AvaSwap')
 
  require('chai')
     .use(require('chai-as-promised'))
     .should()
 
 
-contract('EthSwap', ([deployer, investor]) => {
-  let dai, ethSwap
+contract('AvaSwap', ([deployer, investor]) => {
+  let dai, avaSwap
   before(async () => {
     dai = await Dai.deployed(5777)
-    ethSwap = await EthSwap.new(dai.address)
+    avaSwap = await AvaSwap.new(dai.address)
 
     // Mint Dai
-    await dai.mint(ethSwap.address, 1000000000000000);
+    await dai.mint(avaSwap.address, 1000000000000000);
   })
 
   describe('DAI deployment', async () =>{
@@ -23,14 +23,14 @@ contract('EthSwap', ([deployer, investor]) => {
     })
   })
 
-  describe('EthSwap deployment', async () =>{
+  describe('AvaSwap deployment', async () =>{
     it('contract has a name', async () => {
-      const name = await ethSwap.name()
-      assert.equal(name, 'EthSwap Network Exchange')
+      const name = await avaSwap.name()
+      assert.equal(name, 'AvaSwap Network Exchange')
     })
 
     it('contract has DAI tokens', async () => {
-      let balance = await dai.balanceOf(ethSwap.address)
+      let balance = await dai.balanceOf(avaSwap.address)
       assert.equal(balance.toString(), 1000000000000000)
     })
   })
@@ -39,17 +39,17 @@ contract('EthSwap', ([deployer, investor]) => {
     let result
 
     before( async () => {
-      result = await ethSwap.buyTokens({ from : investor, value: web3.utils.toWei('0.00001', 'ether')})
+      result = await avaSwap.buyTokens({ from : investor, value: web3.utils.toWei('0.00001', 'ether')})
     })
-    it('allows user to buy tokens from EthSwap for a fixed price', async () => {
+    it('allows user to buy tokens from AvaSwap for a fixed price', async () => {
       // Check token balance after purchase
       let investorBalance = await dai.balanceOf(investor)
       assert.equal(investorBalance.toString(), 1000000000000000)
 
-      // Check ethSwap balance after purchase
-      let ethSwapBalance = await dai.balanceOf(ethSwap.address)
-      assert.equal(ethSwapBalance.toString(), 0)
-      let ethBalance = await web3.eth.getBalance(ethSwap.address)
+      // Check avaSwap balance after purchase
+      let avaSwapBalance = await dai.balanceOf(avaSwap.address)
+      assert.equal(avaSwapBalance.toString(), 0)
+      let ethBalance = await web3.eth.getBalance(avaSwap.address)
       assert.equal(ethBalance, web3.utils.toWei('0.00001', 'ether'))
 
       // Check logs event was emitted with correct data
@@ -66,19 +66,19 @@ contract('EthSwap', ([deployer, investor]) => {
 
     before( async () => {
       // investor must approve the token before transaction
-      await dai.approve(ethSwap.address, 1000000000000000, { from: investor})
+      await dai.approve(avaSwap.address, 1000000000000000, { from: investor})
       // investor sells tokens
-      result = await ethSwap.sellToken(1000000000000000, { from: investor })
+      result = await avaSwap.sellToken(1000000000000000, { from: investor })
     })
-    it('allows user to sell tokens to EthSwap for a fixed price', async () => {
+    it('allows user to sell tokens to AvaSwap for a fixed price', async () => {
       // Check token balance after sell
       let investorBalance = await dai.balanceOf(investor)
       assert.equal(investorBalance.toString(), 0)
 
-      // Check ethSwap balance after purchase
-      let ethSwapBalance = await dai.balanceOf(ethSwap.address)
-      assert.equal(ethSwapBalance, 1000000000000000)
-      let ethBalance = await web3.eth.getBalance(ethSwap.address)
+      // Check avaSwap balance after purchase
+      let avaSwapBalance = await dai.balanceOf(avaSwap.address)
+      assert.equal(avaSwapBalance, 1000000000000000)
+      let ethBalance = await web3.eth.getBalance(avaSwap.address)
       assert.equal(ethBalance, web3.utils.toWei('0', 'ether'))
 
       // Check logs event was emitted with correct data
@@ -89,7 +89,7 @@ contract('EthSwap', ([deployer, investor]) => {
       assert.equal(event.rate.toString(), '100')
 
       // FAILURE: investor can't sell more tokens than they have
-      await ethSwap.sellToken(1000000000000000, { from: investor }).should.be.rejected
+      await avaSwap.sellToken(1000000000000000, { from: investor }).should.be.rejected
     })
   })
 })

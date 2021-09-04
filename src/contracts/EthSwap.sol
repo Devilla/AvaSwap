@@ -3,8 +3,8 @@ pragma solidity 0.6.7;
 import "@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
 import './DevToken.sol';
 
-contract EthSwap {
-  string public name = "EthSwap Network Exchange";
+contract AvaSwap {
+  string public name = "AvaSwap Network Exchange";
   DevToken public Token;
   uint public rate;
   AggregatorV3Interface internal priceFeed;
@@ -62,7 +62,7 @@ contract EthSwap {
     //Calculate the amount of the ether to redeem
     uint etherAmount =  _amount / rate;
 
-    // Require that EthSwap has enough ether
+    // Require that AvaSwap has enough ether
     require(address(this).balance >= etherAmount);
 
     // Perform Sale

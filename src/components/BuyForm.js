@@ -9,7 +9,7 @@ class BuyForm extends Component {
 		super(props);
 		this.state = {
 			output: "0",
-			rate: 1000,
+			rate: 100,
 			selected: props.selectedToken.name
 		};
 	}

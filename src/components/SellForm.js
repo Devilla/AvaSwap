@@ -9,6 +9,7 @@ class SellForm extends Component {
 		super(props);
 		this.state = {
 			output: "0",
+			rate: 100,
 			selected: props.selectedToken.name
 		};
 	}
@@ -19,7 +20,7 @@ class SellForm extends Component {
 	}
 
 	render() {
-		let { selected } = this.state;
+		let { selected, rate } = this.state;
 		return (
 			<form
 				className="mb-5"
@@ -45,7 +46,7 @@ class SellForm extends Component {
 						onChange={(event) => {
 							const tokenAmount = this.input.value.toString();
 							this.setState({
-								output: tokenAmount / 100,
+								output: tokenAmount / rate,
 							});
 						}}
 						ref={(input) => {
@@ -98,7 +99,7 @@ class SellForm extends Component {
 					<span className="float-left text-muted">
 						<b>Exchange Rate</b>
 					</span>
-					<span className="float-right text-muted">100 {selected} = 1 ETH</span>
+					<span className="float-right text-muted">{rate} {selected} = 1 ETH</span>
 				</div>
 				<button type="submit" className="btn btn-primary btn-block btn-lg">
 					SWAP!

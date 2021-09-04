@@ -3,7 +3,7 @@ import Web3 from "web3";
 import DevToken from "../abis/DevToken.json";
 import LinkToken from "../abis/LinkToken.json";
 import Dai from "../abis/Dai.json";
-import EthSwap from "../abis/EthSwap.json";
+import AvaSwap from "../abis/AvaSwap.json";
 import Navbar from "./Navbar";
 import Main from "./Main";
 import "./App.css";
@@ -25,7 +25,7 @@ class App extends Component {
 		const accounts = await web3.eth.getAccounts();
 		this.setState({ account: accounts[0] });
 
-		// Set EthSwap balance
+		// Set AvaSwap balance
 		const ethBalance = await web3.eth.getBalance(this.state.account);
 		this.setState({ ethBalance });
 
@@ -41,12 +41,12 @@ class App extends Component {
 			window.alert("Kovan Test Network not detected");
 		}
 
-		// Load EthSwap
-		if (selectedToken.ethSwapAddress) {
-			const ethSwap = new web3.eth.Contract(EthSwap.abi, selectedToken.ethSwapAddress);
-			this.setState({ ethSwap });
+		// Load AvaSwap
+		if (selectedToken.avaSwapAddress) {
+			const avaSwap = new web3.eth.Contract(AvaSwap.abi, selectedToken.avaSwapAddress);
+			this.setState({ avaSwap });
 		} else {
-			window.alert("EthSwap Network not detected");
+			window.alert("AvaSwap Network not detected");
 		}
 
 		// Loading is done, to set loading == false
@@ -90,7 +90,7 @@ class App extends Component {
 	// Get latest price ETH/DAI
 	getLatestPrice = async () => {
 		this.setState({ loading: true });
-		this.state.ethSwap.methods
+		this.state.avaSwap.methods
 			.getLatestPrice()
 			.send({from: this.state.account})
 			.on("transactionHash", async (transactionHash) => {
@@ -105,7 +105,7 @@ class App extends Component {
 	// Buy tokens @desc take input some amount of wei
 	buyTokens = async (etherAmount) => {
 		this.setState({ loading: true });
-		this.state.ethSwap.methods
+		this.state.avaSwap.methods
 			.buyTokens()
 			.send({ value: etherAmount, from: this.state.account })
 			.on("transactionHash", async (transactionHash) => {
@@ -120,12 +120,12 @@ class App extends Component {
 	sellTokens = async (tokenAmount) => {
 		this.setState({ loading: true });
 		this.state.token.methods
-			.approve(this.state.ethSwap.address, tokenAmount)
+			.approve(this.state.avaSwap.address, tokenAmount)
 			.send({ from: this.state.account})
 			.on("transactionHash", async (hash) => {
 				const approveReceipt = await this.fetchMinedTransactionReceipt(hash);
 				if(approveReceipt)
-					this.state.ethSwap.methods
+					this.state.avaSwap.methods
 						.sellToken(tokenAmount)
 						.send({ from: this.state.account })
 						.on("transactionHash", async (transactionHash) => {
@@ -151,11 +151,11 @@ class App extends Component {
 		this.state = {
 			account: "",
 			token: {},
-			ethSwap: {},
+			avaSwap: {},
 			selectedToken:{
 				name : 'LINK',
 				address : '0x235426ce11a3E23EA30f77cf6Dcbc7Fcd31E5a60',
-				ethSwapAddress : '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
+				avaSwapAddress : '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
 			},
 			tokenAddress: '0x43b23072b895a342e464C4116D4fb8d3aaF53c78',
 			tokenBalance: "0",
@@ -165,17 +165,17 @@ class App extends Component {
 			{
 				name : 'LINK',
 				address : '0x235426ce11a3E23EA30f77cf6Dcbc7Fcd31E5a60',
-				ethSwapAddress : '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
+				avaSwapAddress : '0xECEa9e401a648F08ff7680996Bd2ebe2Cc5112Bd'
 			},
 			{
 				name : 'DAI',
 				address : '0x7858355eBC5708ce10494875BC065bD32a88ac0d',
-				ethSwapAddress : '0x2471B119C722a4b214F62a1945d2358462B72c2a'
+				avaSwapAddress : '0x2471B119C722a4b214F62a1945d2358462B72c2a'
 			},
 			{
 				name : 'DEV',
 				address : '0x68B04a6Ce5083DE24a6B6c9362DD38bd9F8A85cA',
-				ethSwapAddress : '0x7B9237158d64009838f1789ca05EC2683D023d30'
+				avaSwapAddress : '0x7B9237158d64009838f1789ca05EC2683D023d30'
 			},
 		]
 		};
@@ -204,7 +204,7 @@ class App extends Component {
 			<div>
 				<Navbar account={this.state.account} />
 				<div className="container-fluid mt-5">
-					<div className="row eth-swap">
+					<div className="row ava-swap">
 						<main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: "600px" }}>
 							<div className="content mr-auto ml-auto">{content}</div>
 						</main>
