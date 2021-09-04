@@ -9,7 +9,7 @@ class SellForm extends Component {
 		super(props);
 		this.state = {
 			output: "0",
-			rate: 100,
+			rate: 10,
 			selected: props.selectedToken.name
 		};
 	}
