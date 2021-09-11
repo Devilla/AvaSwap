@@ -9,10 +9,33 @@ class SellForm extends Component {
 		super(props);
 		this.state = {
 			output: "0",
-			rate: 10,
+			rate: 100,
 			selected: props.selectedToken.name
 		};
 	}
+
+	// componentDidMount() {
+	// 	fetch("https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=link")
+	// 		.then(res => res.json())
+	// 		.then(
+	// 			(result) => {
+	// 				console.log(result);
+	// 				this.setState({
+	// 					// isLoaded: true,
+	// 					rate: result.["avalanche-2"].link
+	// 				});
+	// 			},
+	// 			// Note: it's important to handle errors here
+	// 			// instead of a catch() block so that we don't swallow
+	// 			// exceptions from actual bugs in components.
+	// 			(error) => {
+	// 				this.setState({
+	// 					isLoaded: true,
+	// 					error
+	// 				});
+	// 			}
+	// 		)
+	// }
 
 	handleChange = (event) => {
 		this.setState({ selected: event.target.value });
@@ -42,7 +65,7 @@ class SellForm extends Component {
 				</div>
 				<div className="input-group mb-4">
 					<input
-						type="text"
+						type="number"
 						onChange={(event) => {
 							const tokenAmount = this.input.value.toString();
 							this.setState({
@@ -99,7 +122,7 @@ class SellForm extends Component {
 					<span className="float-left text-muted">
 						<b>Exchange Rate</b>
 					</span>
-					<span className="float-right text-muted">{rate} {selected} = 1 ETH</span>
+					<span className="float-right text-muted">{rate} {selected} = 1 AVAX</span>
 				</div>
 				<button type="submit" className="btn btn-primary btn-block btn-lg">
 					SWAP!
